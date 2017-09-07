@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <aop:aspectj-autoproxy />
+    <bean id="opBean" class="com.janbask.training3.common.Operation">   </bean>
+    <bean id="trackAspect" class="com.janbask.training3.xml.TrackOperation"></bean>
+
+    <aop:config>
+        <aop:aspect id="myaspect" ref="trackAspect" >
+            <!-- @Before -->
+            <aop:pointcut id="pointCutBefore"   expression="execution(* com.janbask.training3.common.Operation.k(..))" />
+            <aop:before method="myadviceBefore" pointcut-ref="pointCutBefore" />
+
+            <!-- @After -->
+            <aop:pointcut id="pointCutAfter"    expression="execution(* com.janbask.training3.common.Operation.m(..))" />
+            <aop:after method="myadviceAfter" pointcut-ref="pointCutAfter" />
+
+            <!-- @AfterReturning -->
+            <aop:pointcut id="pointCutAfterReturning"   expression="execution(* com.janbask.training3.common.Operation.*(..))" />
+            <aop:after-returning method="myadviceAfterReturn" returning="result" pointcut-ref="pointCutAfterReturning" />
+
+            <!-- @Around -->
+            <aop:pointcut id="pointCutAround"   expression="execution(* com.janbask.training3.common.Operation.aroundMethod(..))" />
+            <aop:around method="myadviceAroundMethod" pointcut-ref="pointCutAround" />
+
+            <!-- @AfterThrowing -->
+            <aop:pointcut id="pointCutAfterThrowing"    expression="execution(* com.janbask.training3.common.Operation.validate(..))" />
+            <aop:after-throwing method="myadviceAfterThrow" throwing="error" pointcut-ref="pointCutAfterThrowing" />
+        </aop:aspect>
+    </aop:config>
+
+</beans>
